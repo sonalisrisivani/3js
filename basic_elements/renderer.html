@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/three.min.js"> </script>
+</head>
+<body>
+
+<div id="threejs-container"> </div>
+
+<script type="module">
+
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight); // Match screen size
+document.body.appendChild(renderer.domElement); // Attach the canvas to the DOM
+
+</script>
+
+</body>
+</html>
