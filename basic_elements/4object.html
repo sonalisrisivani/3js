@@ -9,10 +9,13 @@
 
 <script type="module">
 
-const scene = new THREE.Scene();
-scane.background = new THREE.Color("#00b1F0");
 
-alert("Scene successfully created !");
+const geometry = new THREE.BoxGeometry(); // Cube shape
+const material = new THREE.MeshBasicMaterial({ color: "#FF6347" }); // Red color
+const cube = new THREE.Mesh(geometry, material);
+scene.add(cube);
+
+
 
 </script>
 

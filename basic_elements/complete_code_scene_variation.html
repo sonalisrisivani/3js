@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
+  <title>Hello Cube</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r127/three.min.js"></script>
+</head>
+<body>
+  <div id="threejs-container"></div>
+
+  <script type="module">
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    // Scene
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#00b140');
+
+    // Camera
+    const fov = 45;
+    const aspect = width / height;
+    const near = 0.1;
+    const far = 100;
+    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    camera.position.set(0, 0, 10);
+
+    // Renderer
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(width, height);
+
+    // Append Renderer to Container
+    const container = document.querySelector('#threejs-container');
+    container.appendChild(renderer.domElement);
+
+    // Creating a cube
+    const geometry = new THREE.BoxGeometry(2, 2, 2);
+    const textureLoader = new THREE.TextureLoader();
+    const texture = textureLoader.load('https://threejs.org/examples/textures/brick_diffuse.jpg');
+    const texturedMaterial = new THREE.MeshStandardMaterial({ map: texture });
+    const cube = new THREE.Mesh(geometry, texturedMaterial);
+    scene.add(cube);
+
+    // Point Light
+    const light = new THREE.PointLight("#F123FF", 1); // Purple light
+    light.position.set(5, 5, 5);
+    scene.add(light);
+
+    // Ambient Light
+    const ambientLight = new THREE.AmbientLight(0x404040, 0.5); // Soft gray light
+    scene.add(ambientLight);
+
+    // Directional Light
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5); // White directional light
+    directionalLight.position.set(10, 10, 10); // Positioning the light
+    scene.add(directionalLight);
+
+    // Animation Loop
+    function animate() {
+      requestAnimationFrame(animate);
+      cube.rotation.x += 0.01;
+      cube.rotation.y += 0.01;
+      renderer.render(scene, camera);
+    }
+    animate();
+  </script>
+</body>
+</html>

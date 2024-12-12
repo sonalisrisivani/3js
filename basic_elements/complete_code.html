@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
+  <title>Hello Cube</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r127/three.min.js"></script>
+</head>
+<body>
+  <div id="threejs-container"></div>
+
+  <script type="module">
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    // Scene
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#00b140');
+
+    // Camera
+    const fov = 45;
+    const aspect = width / height;
+    const near = 0.1;
+    const far = 100;
+    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    camera.position.set(0, 0, 10);
+
+    // Renderer
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(width, height);
+    
+
+    // Creating a cube
+    const geometry = new THREE.BoxGeometry(2, 2, 2);
+    const material = new THREE.MeshBasicMaterial({ wireframe: true });
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+    // Rendering the scene
+    const container = document.querySelector('#threejs-container');
+    container.appendChild(renderer.domElement);
+    renderer.render(scene, camera);
+  </script>
+</body>
+</html>

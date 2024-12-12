@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
+  <title>Interactive Cube with Camera</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r127/three.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    #threejs-container {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="threejs-container"></div>
+
+  <script type="module">
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    // Scene
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#00b140');
+
+    // Camera
+    const fov = 45;
+    const aspect = width / height;
+    const near = 0.1;
+    const far = 100;
+    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    camera.position.set(0, 0, 10);
+
+    // Renderer
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(width, height);
+
+    // Append Renderer to Container
+    const container = document.querySelector('#threejs-container');
+    container.appendChild(renderer.domElement);
+
+    // Creating a cube
+    const geometry = new THREE.BoxGeometry(2, 2, 2);
+    const material = new THREE.MeshBasicMaterial({ wireframe: true });
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+    // Point Light
+    const light = new THREE.PointLight("#F123FF", 1); // Purple light
+    light.position.set(5, 5, 5);
+    scene.add(light);
+
+    // Mouse Movement Listener
+    const mouse = { x: 0, y: 0 };
+
+    window.addEventListener('mousemove', (event) => {
+      // Normalize mouse position to -1 to 1
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    });
+
+    // Animation Loop
+    function animate() {
+      requestAnimationFrame(animate);
+
+      // Rotate the cube
+      cube.rotation.x += 0.01;
+      cube.rotation.y += 0.01;
+
+      // Update camera position based on mouse movement
+      camera.position.x = mouse.x * 10; // Move left and right
+      camera.position.y = mouse.y * 10; // Move up and down
+      camera.lookAt(scene.position); // Ensure camera looks at the cube
+
+      // Render the scene
+      renderer.render(scene, camera);
+    }
+    animate();
+  </script>
+</body>
+</html>

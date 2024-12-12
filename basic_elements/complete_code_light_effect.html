@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
+  <title>Lighting with Two Cubes</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r127/three.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    #threejs-container {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="threejs-container"></div>
+
+  <script type="module">
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    // Scene
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#87CEEB'); // Light blue background
+
+    // Camera
+    const fov = 45;
+    const aspect = width / height;
+    const near = 0.1;
+    const far = 100;
+    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    camera.position.set(0, 0, 15);
+
+    // Renderer
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(width, height);
+
+    // Append Renderer to Container
+    const container = document.querySelector('#threejs-container');
+    container.appendChild(renderer.domElement);
+
+    // MeshBasicMaterial Cube (No light effects)
+    const basicGeometry = new THREE.BoxGeometry(2, 2, 2);
+    const basicMaterial = new THREE.MeshBasicMaterial({ color: "#FF5733", wireframe: false });
+    const basicCube = new THREE.Mesh(basicGeometry, basicMaterial);
+    basicCube.position.x = -3; // Move to the left
+    scene.add(basicCube);
+
+    // MeshStandardMaterial Cube (Light-reactive)
+    const standardGeometry = new THREE.BoxGeometry(2, 2, 2);
+    const standardMaterial = new THREE.MeshStandardMaterial({ color: "#FFD700", roughness: 0.3, metalness: 1.0 }); // Gold metallic look
+    const metalCube = new THREE.Mesh(standardGeometry, standardMaterial);
+    metalCube.position.x = 3; // Move to the right
+    scene.add(metalCube);
+
+    // Point Light
+    const pointLight = new THREE.PointLight("#FFFFFF", 1.5, 50); // Bright white light
+    pointLight.position.set(0, 5, 5);
+    scene.add(pointLight);
+
+    // Point Light Helper (to show light position)
+    const lightHelper = new THREE.PointLightHelper(pointLight, 1);
+    scene.add(lightHelper);
+
+    // Ambient Light
+    const ambientLight = new THREE.AmbientLight("#FFFFFF", 0.2); // Soft background light
+    scene.add(ambientLight);
+
+
+    // Light Helpers
+    const ambientLightHelper = new THREE.HemisphereLightHelper(
+      new THREE.HemisphereLight("#ffffff", "#444444", 0.2),
+      2
+    );
+    scene.add(ambientLightHelper);
+
+
+    // Animation Loop
+    function animate() {
+      requestAnimationFrame(animate);
+
+      // Rotate both cubes
+      basicCube.rotation.x += 0.01;
+      basicCube.rotation.y += 0.01;
+
+      metalCube.rotation.x += 0.01;
+      metalCube.rotation.y += 0.01;
+
+      renderer.render(scene, camera);
+    }
+    animate();
+  </script>
+</body>
+</html>

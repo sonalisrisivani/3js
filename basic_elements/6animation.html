@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/three.min.js"> </script>
+</head>
+<body>
+
+<div id="threejs-container"> </div>
+
+<script type="module">
+
+
+function animate() {
+    requestAnimationFrame(animate); // Loop this function
+    cube.rotation.x += 0.01; // Rotate cube for animation
+    cube.rotation.y += 0.01;
+    renderer.render(scene, camera); // Render the scene
+}
+animate();
+
+
+
+
+</script>
+
+</body>
+</html>
