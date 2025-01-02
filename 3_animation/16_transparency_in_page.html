@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transparency on Scroll Position</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    #container3D {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 200vh;
+      z-index: 0;
+    }
+    .section {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      z-index: 1;
+    }
+    #section1 {
+      background-color: rgba(240, 240, 240, 0.8);
+    }
+    #section2 {
+      background-color: rgba(208, 208, 240, 0.8);
+    }
+    #section3 {
+      background-color: rgba(140, 140, 140, 0.8);
+    }
+  </style>
+</head>
+<body>
+  <div id="container3D"></div>
+  <div class="section" id="section1">Scroll Down to adjust transparency!</div>
+  <div class="section" id="section2">Transparency Adjusted for Section 2!</div>
+  <div class="section" id="section3">Transparency Adjusted for Section 3!</div>
+
+  <script type="module">
+    import * as THREE from "https://cdn.skypack.dev/three@0.129.0/build/three.module.js";
+    import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/loaders/GLTFLoader.js";
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 15;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    const container = document.getElementById("container3D");
+    container.appendChild(renderer.domElement);
+
+    const light = new THREE.AmbientLight(0xffffff, 1);
+    scene.add(light);
+
+    let loadedObject;
+    const targetOpacity = new THREE.Vector3(1, 1, 1); // Initial target opacity
+
+    const loader = new GLTFLoader();
+    loader.load('./obj/scene.gltf', (gltf) => {
+      loadedObject = gltf.scene;
+      loadedObject.position.set(0, -1, 13);
+      scene.add(loadedObject);
+    }, undefined, console.error);
+
+    function renderScene() {
+      renderer.render(scene, camera);
+    }
+
+    function updateOpacity() {
+      if (loadedObject) {
+        const scrollPosition = window.scrollY / window.innerHeight;
+
+        // Set opacity targets based on scroll position
+        if (scrollPosition < 1) {
+          targetOpacity.set(0.3, 0.3, 0.3); // Full opacity for section 1
+        } else if (scrollPosition < 2) {
+          targetOpacity.set(0.7, 0.7, 0.7); // Lower opacity for section 2
+        } else {
+          targetOpacity.set(1, 1, 1); // Further lower opacity for section 3
+        }
+
+        loadedObject.traverse(child => {
+          if (child.isMesh) {
+            child.material.opacity = THREE.MathUtils.lerp(child.material.opacity, targetOpacity.x, 0.1); // Apply opacity smoothly
+            child.material.transparent = true;
+          }
+        });
+      }
+    }
+
+    function animate() {
+      updateOpacity(); // Update opacity smoothly
+      renderScene();
+    }
+    renderer.setAnimationLoop(animate);
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>
