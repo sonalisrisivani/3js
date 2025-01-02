@@ -1,0 +1,8 @@
+Model Information:
+* title:	Latitude and longitude (low poly)
+* source:	https://sketchfab.com/3d-models/latitude-and-longitude-low-poly-005e6a893d984538a7caee0cd403e0c6
+* author:	famousandfaded (https://sketchfab.com/famousandfaded)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works
