@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Three.js GLTF Import</title>
+  <style>
+    body {
+      margin: 0;
+    }
+    #container3D {
+      width: 100vw;
+      height: 100vh;
+    }
+    .button {
+      margin: 5px;
+      padding: 10px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Animating GLTF File</h1>
+  <div id="container3D"></div>
+
+  <div id="buttons">
+    <button id="rotate-right" class="button">Rotate Right</button>
+    <button id="rotate-left" class="button">Rotate Left</button>
+    <button id="rotate-up" class="button">Rotate Up</button>
+    <button id="rotate-down" class="button">Rotate Down</button>
+    <button id="move-right" class="button">Move Right</button>
+    <button id="move-left" class="button">Move Left</button>
+    <button id="move-up" class="button">Move Up</button>
+    <button id="move-down" class="button">Move Down</button>
+    <button id="reset" class="button">Reset</button>
+  </div>
+
+  <script type="module">
+    import * as THREE from "https://cdn.skypack.dev/three@0.129.0/build/three.module.js";
+    import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/loaders/GLTFLoader.js";
+
+    // Create scene, camera, and renderer
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 15;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById("container3D").appendChild(renderer.domElement);
+
+    // Add ambient light
+    const light = new THREE.AmbientLight(0xffffff, 1);
+    scene.add(light);
+
+    // Load GLTF model
+    let loadedObject;
+
+    const loader = new GLTFLoader();
+    loader.load('./obj/scene.gltf', (gltf) => {
+      loadedObject = gltf.scene;
+      scene.add(loadedObject);
+
+      // Set object position and scale
+      loadedObject.scale.set(3, 3, 3);
+      loadedObject.position.set(0, -2, 3);
+
+    }, undefined, console.error);
+
+    // Animation loop
+    function animate() {
+      if (loadedObject) {
+        loadedObject.rotation.y += 0.00;
+      }
+      renderScene();
+    }
+
+    function renderScene() {
+      renderer.render(scene, camera);
+    }
+
+    renderer.setAnimationLoop(animate);
+
+    // Button event listeners
+    document.getElementById("rotate-right").addEventListener('click', () => {
+      if (loadedObject) {
+        loadedObject.rotation.y += Math.PI / 2; // Rotate 90 degrees to the right
+      }
+    });
+
+    document.getElementById("rotate-left").addEventListener('click', () => {
+      if (loadedObject) {
+        loadedObject.rotation.y -= Math.PI / 2; // Rotate 90 degrees to the left
+      }
+    });
+
+    document.getElementById("rotate-up").addEventListener('click', () => {
+      if (loadedObject) {
+        loadedObject.rotation.x -= Math.PI / 2; // Rotate 90 degrees up
+      }
+    });
+
+    document.getElementById("rotate-down").addEventListener('click', () => {
+      if (loadedObject) {
+        loadedObject.rotation.x += Math.PI / 2; // Rotate 90 degrees down
+      }
+    });
+
+    document.getElementById("move-right").addEventListener('click', () => {
+      if (loadedObject) {
+        loadedObject.position.x += 1; // Move right
+      }
+    });
+
+    document.getElementById("move-left").addEventListener('click', () => {
+      if (loadedObject) {
+        loadedObject.position.x -= 1; // Move left
+      }
+    });
+
+    document.getElementById("move-up").addEventListener('click', () => {
+      if (loadedObject) {
+        loadedObject.position.y += 1; // Move up
+      }
+    });
+
+    document.getElementById("move-down").addEventListener('click', () => {
+      if (loadedObject) {
+        loadedObject.position.y -= 1; // Move down
+      }
+    });
+
+    document.getElementById("reset").addEventListener('click', () => {
+      if (loadedObject) {
+        loadedObject.position.set(0, -2, 3); // Reset position
+        loadedObject.rotation.set(0, 0, 0); // Reset rotation
+        loadedObject.scale.set(3, 3, 3); // Reset scale
+      }
+    });
+
+    scene.background = new THREE.Color(0xffffff);
+    // to run this use "python -m http.server"
+  </script>
+</body>
+</html>

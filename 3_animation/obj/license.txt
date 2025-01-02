@@ -1,0 +1,11 @@
+Model Information:
+* title:	Dragon Hunter Warrior
+* source:	https://sketchfab.com/3d-models/dragon-hunter-warrior-103da5b0997149a4a81d00463ffa8c56
+* author:	Fabian Orrego (https://sketchfab.com/fabian_orrego)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Dragon Hunter Warrior" (https://sketchfab.com/3d-models/dragon-hunter-warrior-103da5b0997149a4a81d00463ffa8c56) by Fabian Orrego (https://sketchfab.com/fabian_orrego) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

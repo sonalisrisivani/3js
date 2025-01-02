@@ -1,0 +1,451 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 177,
+      "max": [
+        1.239590048789978,
+        2.568120002746582,
+        2.005120038986206
+      ],
+      "min": [
+        -2.168720006942749,
+        -5.9334797859191895,
+        -4.401350021362305
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 2124,
+      "componentType": 5126,
+      "count": 177,
+      "max": [
+        0.962134599685669,
+        0.9460820555686951,
+        0.9939479827880859
+      ],
+      "min": [
+        -0.9883717894554138,
+        -0.9697808623313904,
+        -0.9298734664916992
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 177,
+      "max": [
+        0.12745000422000885,
+        0.6149299740791321
+      ],
+      "min": [
+        0.050289999693632126,
+        0.03136000037193298
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 177,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 4248,
+      "componentType": 5126,
+      "count": 7351,
+      "max": [
+        1.074779987335205,
+        0.7043799757957458,
+        1.4414499998092651
+      ],
+      "min": [
+        -0.4896300137042999,
+        -0.7277899980545044,
+        -0.03897000104188919
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 92460,
+      "componentType": 5126,
+      "count": 7351,
+      "max": [
+        0.9996864199638367,
+        0.9998096227645874,
+        0.9997636675834656
+      ],
+      "min": [
+        -0.9998458027839661,
+        -0.9997788071632385,
+        -0.9996220469474792
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 1416,
+      "componentType": 5126,
+      "count": 7351,
+      "max": [
+        0.891759991645813,
+        0.9931700229644775
+      ],
+      "min": [
+        0.021709999069571495,
+        0.14406999945640564
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 708,
+      "componentType": 5125,
+      "count": 7353,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 180672,
+      "componentType": 5126,
+      "count": 535,
+      "max": [
+        1.9162700176239014,
+        1.3067799806594849,
+        2.639820098876953
+      ],
+      "min": [
+        -1.3131500482559204,
+        -1.7272000312805176,
+        -0.24222999811172485
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 187092,
+      "componentType": 5126,
+      "count": 535,
+      "max": [
+        0.8854939341545105,
+        0.8554899096488953,
+        1.0
+      ],
+      "min": [
+        -0.9267804026603699,
+        -1.0,
+        -0.7669907212257385
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 60224,
+      "componentType": 5126,
+      "count": 535,
+      "max": [
+        0.13665999472141266,
+        0.6431499719619751
+      ],
+      "min": [
+        0.10683999955654144,
+        0.45032998919487
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 30120,
+      "componentType": 5125,
+      "count": 828,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "Fabian Orrego (https://sketchfab.com/fabian_orrego)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/dragon-hunter-warrior-103da5b0997149a4a81d00463ffa8c56",
+      "title": "Dragon Hunter Warrior"
+    },
+    "generator": "Sketchfab-12.66.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 33432,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 64504,
+      "byteOffset": 33432,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 193512,
+      "byteOffset": 97936,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 291448,
+      "uri": "scene.bin"
+    }
+  ],
+  "extensionsRequired": [
+    "KHR_materials_pbrSpecularGlossiness"
+  ],
+  "extensionsUsed": [
+    "KHR_materials_pbrSpecularGlossiness"
+  ],
+  "images": [
+    {
+      "uri": "textures/LeaderWarrior_0_diffuse.png"
+    },
+    {
+      "uri": "textures/LeaderWarrior_0_emissive.png"
+    },
+    {
+      "uri": "textures/TranslucencyMaterial_diffuse.png"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "emissiveFactor": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "emissiveTexture": {
+        "index": 1
+      },
+      "extensions": {
+        "KHR_materials_pbrSpecularGlossiness": {
+          "diffuseFactor": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "diffuseTexture": {
+            "index": 0
+          },
+          "glossinessFactor": 0.4,
+          "specularFactor": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "name": "LeaderWarrior_0"
+    },
+    {
+      "alphaMode": "BLEND",
+      "doubleSided": true,
+      "emissiveFactor": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "emissiveTexture": {
+        "index": 1
+      },
+      "extensions": {
+        "KHR_materials_pbrSpecularGlossiness": {
+          "diffuseFactor": [
+            1.0,
+            1.0,
+            1.0,
+            0.754382622
+          ],
+          "diffuseTexture": {
+            "index": 2
+          },
+          "glossinessFactor": 0.4,
+          "specularFactor": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "name": "TranslucencyMaterial"
+    }
+  ],
+  "meshes": [
+    {
+      "name": "DragonKillerSword_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TEXCOORD_0": 2
+          },
+          "indices": 3,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "LeaderWarrior_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 5,
+            "POSITION": 4,
+            "TEXCOORD_0": 6
+          },
+          "indices": 7,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "MagicSpell_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 9,
+            "POSITION": 8,
+            "TEXCOORD_0": 10
+          },
+          "indices": 11,
+          "material": 1,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        -1.0,
+        0.0,
+        0.0,
+        1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2,
+        4,
+        6
+      ],
+      "name": "Root"
+    },
+    {
+      "children": [
+        3
+      ],
+      "matrix": [
+        0.06390000000000001,
+        -0.05959000000000001,
+        -0.07958000000000001,
+        0.0,
+        0.09917000000000004,
+        0.031580000000000004,
+        0.05598,
+        0.0,
+        -0.006960000000000003,
+        -0.09705000000000003,
+        0.06708000000000001,
+        0.0,
+        -0.14669000000000001,
+        0.6932400000000002,
+        1.0529899999999999,
+        1.0
+      ],
+      "name": "DragonKillerSword"
+    },
+    {
+      "mesh": 0,
+      "name": "DragonKillerSword_0"
+    },
+    {
+      "children": [
+        5
+      ],
+      "name": "LeaderWarrior"
+    },
+    {
+      "mesh": 1,
+      "name": "LeaderWarrior_0"
+    },
+    {
+      "children": [
+        7
+      ],
+      "name": "MagicSpell"
+    },
+    {
+      "mesh": 2,
+      "name": "MagicSpell_0"
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 1
+    },
+    {
+      "sampler": 0,
+      "source": 2
+    }
+  ]
+}

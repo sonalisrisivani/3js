@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive 3D Model with Buttons</title>
+  <style>
+    body {
+      margin: 0;
+    }
+    #container3D {
+      width: 100vw;
+      height: 100vh;
+    }
+    .button {
+      height: 40px;
+      width: 150px;
+      margin: 10px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Interactive 3D Model with Buttons</h1>
+  
+  <div id="container3D"></div>
+
+  <div id="button-container">
+    <button class="button" id="rotate-btn">Rotate Object</button>
+    <button class="button" id="reset-btn">reset</button>
+    <button class="button" id="scale-btn">Scale Object</button>
+    <button class="button" id="move-btn">Move Object</button>
+  </div>
+
+  <script type="module">
+    import * as THREE from "https://cdn.skypack.dev/three@0.129.0/build/three.module.js";
+    import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/loaders/GLTFLoader.js";
+
+    // Create scene, camera, and renderer
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 15;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById("container3D").appendChild(renderer.domElement);
+
+    // Add ambient light
+    const light = new THREE.AmbientLight(0xffffff, 1);
+    scene.add(light);
+
+    // Load GLTF model
+    let loadedObject; // Variable to store the loaded object
+    const loader = new GLTFLoader();
+    loader.load('./obj/scene.gltf', (gltf) => {
+       loadedObject = gltf.scene; // Assign the loaded object to the variable
+       scene.add(loadedObject);   // Add the object to the scene
+
+       loadedObject.scale.set(3, 3, 3);  // Scale: Make it bigger
+       loadedObject.position.set(0, -2, 3); // Position
+    }, undefined, console.error);
+
+    // Render the scene
+    function renderScene() {
+      renderer.render(scene, camera);
+    }
+
+renderScene();
+
+    // Set animation loop
+    function animate() {
+       if (loadedObject) {
+         loadedObject.rotation.y += 0.00; // Default rotation for continuous animation
+       }
+       renderScene();
+    }
+
+    renderer.setAnimationLoop(animate); // Optimized for browser
+
+    // Button Interactions
+    const rotateButton = document.getElementById("rotate-btn");
+    rotateButton.addEventListener('click', () => {
+      if (loadedObject) {
+        loadedObject.rotation.y += Math.PI / 4; // Rotate 45 degrees on Y-axis
+      }
+    });
+
+    
+// Reset object position
+const resetButton = document.getElementById("reset-btn");
+resetButton.addEventListener('click', () => {
+  if (loadedObject) {
+    loadedObject.position.set(0, -2, 3); // Reset position
+    loadedObject.rotation.y = 0; // Reset rotation
+    loadedObject.scale.set(3, 3, 3); // Reset scale
+  }
+});
+
+
+    const scaleButton = document.getElementById("scale-btn");
+    scaleButton.addEventListener('click', () => {
+      if (loadedObject) {
+        const x = Math.random();
+        loadedObject.scale.setScalar(x); // Scale up by 1.5x
+      }
+    });
+
+    const moveButton = document.getElementById("move-btn");
+    moveButton.addEventListener('click', () => {
+      if (loadedObject) {
+        loadedObject.position.y += 1; // Move the object along Y-axis only
+      }
+    });
+
+    scene.background = new THREE.Color(0xffffff); // White background
+    // to run this use "python -m http.server"
+
+  </script>
+</body>
+</html>
