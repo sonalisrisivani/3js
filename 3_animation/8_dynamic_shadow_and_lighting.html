@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive GLTF Animation</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    #container3D {
+      width: 100vw;
+      height: 90vh;
+    }
+    #controls {
+      text-align: center;
+      margin-top: 10px;
+    }
+    button {
+      margin: 5px;
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align:center;">Interactive GLTF Animation with Shadows</h1>
+  <div id="container3D"></div>
+  <div id="controls">
+    <button onclick="rotateObject('x', 0.1)">Rotate X+</button>
+    <button onclick="rotateObject('x', -0.1)">Rotate X-</button>
+    <button onclick="rotateObject('y', 0.1)">Rotate Y+</button>
+    <button onclick="rotateObject('y', -0.1)">Rotate Y-</button>
+    <button onclick="moveObject('x', 1)">Move Right</button>
+    <button onclick="moveObject('x', -1)">Move Left</button>
+    <button onclick="moveObject('y', 1)">Move Up</button>
+    <button onclick="moveObject('y', -1)">Move Down</button>
+    <button onclick="resetObject()">Reset</button>
+  </div>
+
+  <script type="module">
+    import * as THREE from "https://cdn.skypack.dev/three@0.129.0/build/three.module.js";
+    import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/loaders/GLTFLoader.js";
+
+    // Scene, Camera, Renderer
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 15;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight * 0.9);
+    renderer.shadowMap.enabled = true;
+    document.getElementById("container3D").appendChild(renderer.domElement);
+
+    // Lights
+    const ambientLight = new THREE.AmbientLight(0x404040, 1); // Soft ambient light
+    scene.add(ambientLight);
+
+    const pointLight = new THREE.PointLight(0xffffff, 1, 100);
+    pointLight.position.set(10, 10, 10);
+    pointLight.castShadow = true;
+    scene.add(pointLight);
+
+    const pointLightHelper = new THREE.PointLightHelper(pointLight);
+    scene.add(pointLightHelper);
+
+    // Plane for shadow
+    const planeGeometry = new THREE.PlaneGeometry(50, 50);
+    const planeMaterial = new THREE.ShadowMaterial({ opacity: 0.5 });
+    const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+    plane.rotation.x = -Math.PI / 2;
+    plane.position.y = -5;
+    plane.receiveShadow = true;
+    scene.add(plane);
+
+    // Load GLTF Model
+    let loadedObject;
+    const loader = new GLTFLoader();
+    loader.load('./obj/scene.gltf', (gltf) => {
+      loadedObject = gltf.scene;
+      loadedObject.scale.set(3, 3, 3);
+      loadedObject.position.set(0, -2, 3);
+      loadedObject.traverse((node) => {
+        if (node.isMesh) {
+          node.castShadow = true;
+        }
+      });
+      scene.add(loadedObject);
+    }, undefined, console.error);
+
+    // Interaction Functions
+    function rotateObject(axis, angle) {
+      if (loadedObject) {
+        loadedObject.rotation[axis] += angle;
+      }
+    }
+
+    function moveObject(axis, distance) {
+      if (loadedObject) {
+        loadedObject.position[axis] += distance;
+      }
+    }
+
+    function resetObject() {
+      if (loadedObject) {
+        loadedObject.position.set(0, -2, 3);
+        loadedObject.rotation.set(0, 0, 0);
+      }
+    }
+
+    // Dynamic Lighting Animation
+    function updateLighting() {
+      const time = Date.now() * 0.001;
+      pointLight.position.x = Math.sin(time) * 10;
+      pointLight.position.z = Math.cos(time) * 10;
+    }
+
+    // Animation Loop
+    function animate() {
+      updateLighting();
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    // Background
+    scene.background = new THREE.Color(0x87ceeb); // Sky blue
+  </script>
+</body>
+</html>
