@@ -29,7 +29,9 @@
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    document.getElementById("container3D").appendChild(renderer.domElement);
+    const container = document.getElementById("container3D");
+    container.appendChild(renderer.domElement);
+
 
     // Add ambient light
     const light = new THREE.AmbientLight(0xffffff, 1);
@@ -38,10 +40,10 @@
     // Load GLTF model
     const loader = new GLTFLoader();
     loader.load('./obj/scene.gltf', (gltf) => {
-      scene.add(gltf.scene);
-    }, undefined, (error) => {
-      console.error('Error loading GLTF model:', error);
-    });
+       loadedObject = gltf.scene; // Assign the loaded object to the variable
+       scene.add(loadedObject);   // Add the object to the scene
+    }, undefined, console.error);
+
 
     // Render the scene
     function renderScene() {

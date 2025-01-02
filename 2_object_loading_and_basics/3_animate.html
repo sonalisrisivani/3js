@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Three.js GLTF Import</title>
+  <style>
+    body {
+      margin: 0;
+      
+    }
+    #container3D {
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <h1> importing gltf file </h1>
+  <div id="container3D"></div>
+
+
+
+
+  <script type="module">
+    import * as THREE from "https://cdn.skypack.dev/three@0.129.0/build/three.module.js";
+    import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/loaders/GLTFLoader.js";
+
+    // Create scene, camera, and renderer
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 5;
+    
+
+   const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    const container = document.getElementById("container3D");
+    container.appendChild(renderer.domElement);
+
+
+
+    // Add ambient light
+    const light = new THREE.AmbientLight(0xffffff, 1);
+    scene.add(light);
+
+    // Load GLTF model
+    let loadedObject; // Variable to store the loaded object
+
+    const loader = new GLTFLoader();
+    loader.load('./obj/scene.gltf', (gltf) => {
+       loadedObject = gltf.scene; // Assign the loaded object to the variable
+       scene.add(loadedObject);   // Add the object to the scene
+
+
+
+
+
+
+
+
+
+
+//manipulate the object
+ loadedObject.scale.set(3, 3, 3);  // Scale: Make it bigger
+      loadedObject.rotation.x = Math.PI / 4; // Rotate: 45 degrees on X-axis
+      loadedObject.rotation.y = Math.PI / 4; 
+      loadedObject.position.set(0, 0, 3);   // Move: Adjust position
+    
+
+
+    }, undefined, console.error);
+
+
+
+
+
+
+
+    // Render the scene
+    function renderScene() {
+      renderer.render(scene, camera);
+    }
+
+    // Set animation loop
+    function animate(){
+       if(loadedObject){
+        loadedObject.rotation.z += 0.01;
+	loadedObject.rotation.y += 0.01;
+	loadedObject.rotation.x += 0.01;
+      }
+       renderScene();
+    }
+
+
+
+renderer.setAnimationLoop(animate); // it is same as calling animate() function but it is more optimal for browser
+
+
+
+
+
+  </script>
+</body>
+</html>
