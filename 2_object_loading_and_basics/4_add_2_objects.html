@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Three.js GLTF Import</title>
+  <style>
+    body {
+      margin: 0;
+    }
+    #container3D {
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <h1>Importing GLTF file</h1>
+  <div id="container3D"></div>
+
+  <script type="module">
+    import * as THREE from "https://cdn.skypack.dev/three@0.129.0/build/three.module.js";
+    import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/loaders/GLTFLoader.js";
+
+    // Create scene, camera, and renderer
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 5;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    const container = document.getElementById("container3D");
+    container.appendChild(renderer.domElement);
+
+    // Add ambient light
+    const light = new THREE.AmbientLight(0xffffff, 1);
+    scene.add(light);
+
+    // Load GLTF model
+    let loadedObject; // Global variable to store the loaded object
+
+    const loader = new GLTFLoader();
+    loader.load('./obj/scene.gltf', (gltf) => {
+       loadedObject = gltf.scene; // Assign the loaded object to the global variable
+       scene.add(loadedObject);   // Add the object to the scene
+
+       // Manipulate the object
+       loadedObject.scale.set(3, 3, 3);  // Scale: Make it bigger
+       loadedObject.rotation.x = Math.PI / 4; // Rotate: 45 degrees on X-axis
+       loadedObject.rotation.y = Math.PI / 4;
+       loadedObject.position.set(1, 0, 3);   // Move: Adjust position
+
+    }, undefined, console.error);
+
+
+
+
+
+
+
+
+
+    // Load GLTF model 2
+    const loader2 = new GLTFLoader();
+    loader2.load('./obj2/scene.gltf', (gltf) => {
+        const loadedObject2 = gltf.scene;
+
+        // Adjust model scale and position
+        loadedObject2.scale.set(2.5, 2.5, 2.5);
+        loadedObject2.position.set(0,0,3);
+        loadedObject2.rotation.y = -Math.PI / 3;
+
+        scene.add(loadedObject2); // Add the second model to the scene
+
+        alert("success"); // Show success message
+    }, undefined, (error) => {
+        alert('Error loading GLTF file 2:', error);
+    });
+
+
+
+
+
+
+
+
+    // Render the scene
+    function renderScene() {
+      renderer.render(scene, camera);
+    }
+
+    // Set animation loop
+    renderer.setAnimationLoop(renderScene);
+
+    // Adjust rendering on window resize
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>
