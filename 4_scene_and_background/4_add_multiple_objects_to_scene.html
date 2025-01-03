@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Three.js GLTF Import</title>
+  <style>
+    body {
+      margin: 0;
+    }
+    #container3D {
+      width: 100vw;
+      height: 100vh;
+    }
+    #loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+      color: #fff;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 10px;
+      border-radius: 5px;
+      display: none; /* Hidden by default */
+    }
+  </style>
+</head>
+<body>
+  <h1>Importing GLTF Files</h1>
+  <div id="loading">Loading 3D model...</div>
+  <div id="container3D"></div>
+
+  <script type="module">
+    import * as THREE from "https://cdn.skypack.dev/three@0.129.0/build/three.module.js";
+    import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/loaders/GLTFLoader.js";
+    import { OrbitControls } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/controls/OrbitControls.js";
+
+    // Create scene, camera, and renderer
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x87CEEB); // Light blue background
+
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 2, 10); // Adjusted position
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    const container = document.getElementById("container3D");
+    container.appendChild(renderer.domElement);
+
+    // Show loading message
+    const loadingDiv = document.getElementById("loading");
+    loadingDiv.style.display = "block";
+
+    // Add ambient light
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+    scene.add(ambientLight);
+
+    // Add directional light
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(5, 10, 5);
+    directionalLight.castShadow = true;
+    scene.add(directionalLight);
+
+    // Add point light for extra illumination
+    const pointLight = new THREE.PointLight(0xffffff, 0.8, 50);
+    pointLight.position.set(-5, 5, 5);
+    scene.add(pointLight);
+
+    // Load first GLTF model
+    const loader1 = new GLTFLoader();
+    loader1.load('./obj/scene.gltf', (gltf) => {
+        loadingDiv.style.display = 'none'; // Hide loading message
+        const loadedObject1 = gltf.scene;
+
+        // Adjust model scale and position
+        loadedObject1.scale.set(0.5, 0.5, 0.5);
+        loadedObject1.position.set(-2, -1, -1); // Positioned 
+
+        scene.add(loadedObject1);
+    }, undefined, (error) => {
+        console.error('Error loading GLTF file 1:', error);
+    });
+
+
+
+
+
+//use https://www.gltfeditor.com/ to adjust angles and positions
+
+
+    // Load second GLTF model
+    const loader2 = new GLTFLoader();
+    loader2.load('./obj2/scene.gltf', (gltf) => {
+        const loadedObject2 = gltf.scene;
+
+        // Adjust model scale and position
+        loadedObject2.scale.set(1, 1, 1);
+        loadedObject2.position.set(-10, -1, 8); // Positioned n the right side of obj1
+        loadedObject2.rotation.y = -Math.PI / 2;
+
+        scene.add(loadedObject2);
+        //alert("Success: GLTF file 2 loaded.");
+    }, undefined, (error) => {
+        alert('Error loading GLTF file 2:', error);
+    });
+
+
+
+
+
+
+
+
+
+
+    // Add grid helper
+    const gridHelper = new THREE.GridHelper(50, 50, 0x00ff00, 0x00ff00);
+    gridHelper.position.y = -2;
+    gridHelper.material.opacity = 1;
+    gridHelper.material.transparent = true;
+    scene.add(gridHelper);
+
+    // Add plane below objects
+    const planeGeometry = new THREE.PlaneGeometry(70, 70, 1, 1);
+    const planeMaterial = new THREE.MeshBasicMaterial({ color: 0x3F4122, side: THREE.DoubleSide });
+    const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+    plane.rotation.x = -Math.PI / 2;
+    plane.position.y = -1.1;
+    scene.add(plane);
+
+    // Orbit controls for better interaction
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.25;
+    controls.enableZoom = true;
+    controls.enablePan = true;
+    controls.enableRotate = true;
+    controls.minPolarAngle = 0;
+    controls.maxPolarAngle = Math.PI / 2;
+    controls.target.set(0, 0, 0);
+
+    // Render loop
+    function renderScene() {
+      renderer.render(scene, camera);
+    }
+    renderer.setAnimationLoop(renderScene);
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>
