@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Three.js GLTF Import</title>
+  <style>
+    body {
+      margin: 0;
+    }
+    #container3D {
+      width: 100vw;
+      height: 100vh;
+    }
+    #loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+      color: #fff;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 10px;
+      border-radius: 5px;
+      display: none; /* Hidden by default */
+    }
+  </style>
+</head>
+<body>
+  <h1>Importing GLTF File</h1>
+  <div id="loading">Loading 3D model...</div>
+  <div id="container3D"></div>
+
+  <script type="module">
+    import * as THREE from "https://cdn.skypack.dev/three@0.129.0/build/three.module.js";
+    import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/loaders/GLTFLoader.js";
+
+import { OrbitControls } from 'https://cdn.skypack.dev/three@0.129.0/examples/jsm/controls/OrbitControls.js';
+
+
+
+    // Create scene, camera, and renderer
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 0, 10); // Adjusted position
+    camera.lookAt(scene.position); // Ensure camera is pointing at the scene
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(window.devicePixelRatio); // Optimize rendering
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    const container = document.getElementById("container3D");
+    container.appendChild(renderer.domElement);
+
+    // Show loading message
+    const loadingDiv = document.getElementById('loading');
+    loadingDiv.style.display = 'block';
+
+    // Add ambient light
+    const light = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(light);
+
+    // Directional light for better shadow casting
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1); 
+    directionalLight.position.set(5, 10, 5); // Position the directional light
+    scene.add(directionalLight);
+
+    // Load GLTF model
+    const loader = new GLTFLoader();
+    loader.load('./obj/scene.gltf', (gltf) => {
+        loadingDiv.style.display = 'none'; // Hide the loading message
+        const loadedObject = gltf.scene;
+
+        
+
+	//manipulate obj positions 
+	loadedObject.scale.set(0.5,0.5,0.5);
+	loadedObject.position.set(0,-1,-1);
+	//loadedObject.rotation.y=Math.PI ;
+	loadedObject.rotation.y=-Math.PI/3;
+
+        scene.add(loadedObject);
+        alert("Model loaded successfully!");
+    }, undefined, (error) => {
+        alert('Error loading GLTF file:', error);
+    });
+
+    // Render the scene
+    function renderScene() {
+      renderer.render(scene, camera);
+    }
+
+    // Set animation loop
+    renderer.setAnimationLoop(renderScene);
+
+    // Adjust rendering on window resize
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+
+
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true; // Enables smooth damping (for inertia)
+controls.dampingFactor = 0.25;
+
+controls.enableZoom = true; // Allow zooming
+controls.enablePan = true;  // Allow panning
+controls.enableRotate = true; // Allow rotation
+
+
+
+
+
+  </script>
+</body>
+</html>
