@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Maze Map</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        #gameCanvas {
+            width: 100%;
+            height: 100vh;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameCanvas"></div> <!-- The div where the 3D object will be rendered -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/146/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r146/controls/OrbitControls.js"></script>
+
+    <script type="module">
+        import * as THREE from "https://cdn.skypack.dev/three@0.129.0/build/three.module.js";
+        import { OrbitControls } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/controls/OrbitControls.js";
+
+        // Get the div element where we will render the scene
+        const canvasDiv = document.getElementById('gameCanvas');
+
+        // Scene setup
+        const scene = new THREE.Scene();
+
+        // Camera setup (Perspective camera for 3D view)
+        const camera = new THREE.PerspectiveCamera(
+            75, 
+            window.innerWidth / window.innerHeight, 
+            0.1, 
+            1000
+        );
+
+        // Renderer setup
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        canvasDiv.appendChild(renderer.domElement); // Attach renderer to the div
+
+        // OrbitControls setup
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true; // Enables smooth movement
+        controls.dampingFactor = 0.25; // Smoothness of the movement
+        controls.screenSpacePanning = false; // Disable panning outside the scene
+
+        // Maze creation function
+        const walls = [];
+
+        function createMaze() {
+            // Maze walls
+            const wallMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+
+            // Create walls for the maze (simple layout with cubes)
+            const wallGeometry = new THREE.BoxGeometry(2, 2, 0.2); // Wall shape: thin but tall
+            const wallPositions = [
+                { x: 0, y: 0, z: -5 },
+                { x: 2, y: 0, z: -5 },
+                { x: -2, y: 0, z: -5 },
+                { x: 0, y: 0, z: 5 },
+                { x: 5, y: 0, z: 0 },
+                { x: -5, y: 0, z: 0 },
+                { x: 0, y: 0, z: 0 }
+            ];
+
+            // Loop to create each wall at its respective position
+            wallPositions.forEach(position => {
+                const wall = new THREE.Mesh(wallGeometry, wallMaterial);
+                wall.position.set(position.x, position.y, position.z);
+                scene.add(wall);
+                walls.push(wall); // Store walls for collision detection
+            });
+        }
+
+        // Create maze
+        createMaze();
+
+        // Add a basic floor (ground plane)
+        const floorGeometry = new THREE.PlaneGeometry(100, 100);
+        const floorMaterial = new THREE.MeshBasicMaterial({ color: 0xaaaaaa, side: THREE.DoubleSide });
+        const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+        floor.rotation.x = Math.PI / 2; // Make the plane horizontal
+        scene.add(floor);
+
+        // Add light to illuminate the scene
+        const light = new THREE.DirectionalLight(0xffffff, 1);
+        light.position.set(5, 10, 5);
+        scene.add(light);
+
+        // Set initial camera position
+        camera.position.z = 10;
+
+        // Keyboard control setup
+        let keys = {};
+
+        document.addEventListener("keydown", (event) => {
+            keys[event.key] = true;
+        });
+
+        document.addEventListener("keyup", (event) => {
+            keys[event.key] = false;
+        });
+
+        // Check if camera collides with any of the walls
+        function checkCollision(newPosition) {
+            const radius = 1; // Radius of the camera (to simulate a collision "bounding box")
+
+            return walls.some(wall => {
+                const distance = new THREE.Vector3().subVectors(newPosition, wall.position).length();
+                return distance < radius + 1; // 1 is the distance threshold (size of the walls)
+            });
+        }
+
+        // Move the camera based on keyboard input (WASD keys)
+        function moveCamera() {
+            const speed = 0.1;
+            let newPosition = camera.position.clone(); // Make a copy of the current position
+
+            if (keys["w"]) newPosition.z -= speed; // Move forward
+            if (keys["s"]) newPosition.z += speed; // Move backward
+            if (keys["a"]) newPosition.x -= speed; // Move left
+            if (keys["d"]) newPosition.x += speed; // Move right
+
+            // Only update the camera's position if there is no collision
+            if (!checkCollision(newPosition)) {
+                camera.position.copy(newPosition);
+            }
+        }
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            moveCamera();
+            controls.update(); // Update controls for smooth camera movement
+            renderer.render(scene, camera);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
