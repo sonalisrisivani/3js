@@ -50,13 +50,21 @@
         controls.dampingFactor = 0.25; // Smoothness of the movement
         controls.screenSpacePanning = false; // Disable panning outside the scene
 
+        // Texture loader
+        const textureLoader = new THREE.TextureLoader();
+
+        // Wall texture
+        const wallTexture = textureLoader.load('./wall_texture.jpg'); // Replace with your texture path
+        const wallMaterial = new THREE.MeshBasicMaterial({ map: wallTexture });
+
+        // Floor texture
+        const floorTexture = textureLoader.load('./floor_texture.jpg'); // Replace with your texture path
+        const floorMaterial = new THREE.MeshBasicMaterial({ map: floorTexture, side: THREE.DoubleSide });
+
         // Maze creation function
         const walls = [];
 
         function createMaze() {
-            // Maze walls
-            const wallMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-
             // Create walls for the maze (simple layout with cubes)
             const wallGeometry = new THREE.BoxGeometry(2, 2, 0.2); // Wall shape: thin but tall
             const wallPositions = [
@@ -83,7 +91,6 @@
 
         // Add a basic floor (ground plane)
         const floorGeometry = new THREE.PlaneGeometry(100, 100);
-        const floorMaterial = new THREE.MeshBasicMaterial({ color: 0xaaaaaa, side: THREE.DoubleSide });
         const floor = new THREE.Mesh(floorGeometry, floorMaterial);
         floor.rotation.x = Math.PI / 2; // Make the plane horizontal
         scene.add(floor);
@@ -142,7 +149,6 @@
         }
 
         animate();
-
     </script>
 </body>
 </html>
