@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Three.js GLTF Import</title>
+  <style>
+    body {
+      margin: 0;
+      
+    }
+    #container3D {
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <h1> importing gltf file </h1>
+  <div id="container3D"></div>
+
+
+
+
+  <script type="module">
+    import * as THREE from "https://cdn.skypack.dev/three@0.129.0/build/three.module.js";
+    import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/loaders/GLTFLoader.js";
+    import { OrbitControls } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/controls/OrbitControls.js";
+
+
+    // Create scene, camera, and renderer
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = -25;
+    
+
+   const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    const container = document.getElementById("container3D");
+    container.appendChild(renderer.domElement);
+
+
+
+// Add ambient light with higher intensity
+const ambientLight = new THREE.AmbientLight(0xffffff, 2); // Intensity increased to 2
+scene.add(ambientLight);
+
+// Add directional light
+const directionalLight = new THREE.DirectionalLight(0xffffff, 3);
+directionalLight.position.set(5, 10, 7.5); // Position the light
+scene.add(directionalLight);
+
+// Optional: Add a point light
+const pointLight = new THREE.PointLight(0xffffff, 1.5, 50); // Intensity and range
+pointLight.position.set(10, 10, 10); // Position the point light
+scene.add(pointLight);
+
+// Optional: Add hemisphere light for balanced lighting
+const hemisphereLight = new THREE.HemisphereLight(0xffffbb, 0x080820, 1); // Sky and ground colors
+scene.add(hemisphereLight);
+
+
+
+
+
+    // Load GLTF model
+    let loadedObject; // Variable to store the loaded object
+
+// Variables for animation
+let mixer; // Animation mixer
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+// Load GLTF model
+const loader = new GLTFLoader();
+loader.load('./obj4/scene.gltf', (gltf) => {
+  loadedObject = gltf.scene; // Get the loaded model
+  scene.add(loadedObject); // Add the object to the scene
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // Scale and position adjustments
+  loadedObject.scale.set(-3, -3, -3);
+  loadedObject.rotation.z = Math.PI / 1;
+  loadedObject.rotation.y = -Math.PI / 2;
+  //loadedObject.rotation.x = Math.PI / 2;
+  loadedObject.position.set(1, 0, 180);
+
+  // Check if the model has animations
+  if (gltf.animations && gltf.animations.length) {
+    mixer = new THREE.AnimationMixer(loadedObject); // Create animation mixer
+    const action = mixer.clipAction(gltf.animations[0]); // Get the first animation
+    action.play(); // Play the animation
+  }
+}, undefined, (error) => {
+  console.error("Error loading GLTF model:", error);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // OrbitControls setup
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true; // Enables smooth movement
+        controls.dampingFactor = 0.25; // Smoothness of the movement
+        controls.screenSpacePanning = false; // Disable panning outside the scene
+	controls.target.set(0, 0, 0); // Set the target to the center (or remove this line for no target)
+        controls.autoRotate = false; // Disable auto rotation
+        controls.enableRotate = true; // Allow free rotation without locking
+
+
+
+
+
+ // Render the scene
+function renderScene() {
+  const delta = clock.getDelta(); // Get the time between frames
+  if (mixer) mixer.update(delta); // Update the animation mixer
+  controls.update(); // Update controls
+  renderer.render(scene, camera);
+}
+
+
+
+// Clock for animations
+const clock = new THREE.Clock();
+
+
+    // Set animation loop
+    renderer.setAnimationLoop(renderScene);
+
+
+
+
+
+
+
+
+    // Adjust rendering on window resize
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+scene.background = new THREE.Color(0xffffff); 
+// white background
+//to run this use "python -m http.server"
+
+
+
+
+
+
+
+
+
+
+
+  </script>
+</body>
+</html>
