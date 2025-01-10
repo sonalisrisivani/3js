@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GLTF Animation Import</title>
+  <style>
+    body {
+      margin: 0;
+    }
+    #container3D {
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <h1>Importing GLTF with Animation</h1>
+  <div id="container3D"></div>
+
+  <script type="module">
+    import * as THREE from "https://cdn.skypack.dev/three@0.129.0/build/three.module.js";
+    import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/loaders/GLTFLoader.js";
+
+    // Scene, Camera, and Renderer Setup
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 2, 5);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById("container3D").appendChild(renderer.domElement);
+
+    // Lighting
+    const light = new THREE.AmbientLight(0xffffff, 1);
+    scene.add(light);
+
+    // Animation Variables
+    let mixer;
+    let clock = new THREE.Clock();
+
+    // Load GLTF Model
+    const loader = new GLTFLoader();
+    loader.load('./obj/scene.gltf', (gltf) => {
+      const loadedObject = gltf.scene;
+      scene.add(loadedObject);
+
+      // Adjust Object Transformations
+      loadedObject.scale.set(10, 10, 10);
+      loadedObject.position.set(1, 0, 0);
+      loadedObject.rotation.y = Math.PI / 4;
+
+      // Setup Animation Mixer to use the animation it have inbuilt
+      if (gltf.animations.length > 0) {
+        mixer = new THREE.AnimationMixer(loadedObject);
+        const action = mixer.clipAction(gltf.animations[0]); // Play the first animation 
+
+// set of animations are stored in form of an array.
+        action.play();
+      }
+    }, undefined, console.error);
+
+    // Render and Animation Loop
+    function animate() {
+      requestAnimationFrame(animate);
+
+      if (mixer) {
+        const delta = clock.getDelta(); // Time elapsed since last frame
+        mixer.update(delta); // Update animations
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    // Handle Window Resize
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>
