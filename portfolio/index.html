@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Room</title>
+  <style>
+    body { margin: 0; overflow: hidden; }
+    canvas { display: block; }
+  </style>
+</head>
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.154.0/three.min.js"></script>
+  <script>
+    // JavaScript code will go here.
+
+
+// Scene, Camera, Renderer
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+// Room dimensions
+const roomSize = 10;
+
+// Create walls
+const materials = [
+  new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.BackSide }), // Red wall
+  new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.BackSide }), // Green wall
+  new THREE.MeshBasicMaterial({ color: 0x0000ff, side: THREE.BackSide }), // Blue wall
+  new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.BackSide }), // Yellow wall
+  new THREE.MeshBasicMaterial({ color: 0x808080, side: THREE.BackSide }), // Ceiling
+  new THREE.MeshBasicMaterial({ color: 0x404040, side: THREE.BackSide })  // Floor
+];
+
+// Cuboid Room
+const roomGeometry = new THREE.BoxGeometry(roomSize, roomSize, roomSize);
+const room = new THREE.Mesh(roomGeometry, materials);
+scene.add(room);
+
+// Position camera inside the room
+camera.position.set(0, 0, 0);
+
+
+// Movement controls
+let controls = { w: false, a: false, s: false, d: false };
+
+document.addEventListener("keydown", (event) => (controls[event.key] = true));
+document.addEventListener("keyup", (event) => (controls[event.key] = false));
+
+function moveCamera() {
+  const speed = 0.1;
+  if (controls.w) camera.position.z -= speed;
+  if (controls.s) camera.position.z += speed;
+  if (controls.a) camera.position.x -= speed;
+  if (controls.d) camera.position.x += speed;
+}
+
+function animate() {
+  requestAnimationFrame(animate);
+  moveCamera();
+  renderer.render(scene, camera);
+}
+animate();
+
+const light = new THREE.PointLight(0xffffff, 1, 100);
+light.position.set(0, 5, 0);
+scene.add(light);
+
+
+const boundary = roomSize / 2 - 0.5;
+camera.position.x = Math.max(-boundary, Math.min(boundary, camera.position.x));
+camera.position.z = Math.max(-boundary, Math.min(boundary, camera.position.z));
+
+  </script>
+</body>
+</html>

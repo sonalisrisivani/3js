@@ -87,7 +87,7 @@ let mixer; // Animation mixer
 
 // Load GLTF model
 const loader = new GLTFLoader();
-loader.load('./obj4/scene.gltf', (gltf) => {
+loader.load('./obj/scene.gltf', (gltf) => {
   loadedObject = gltf.scene; // Get the loaded model
   scene.add(loadedObject); // Add the object to the scene
 
@@ -117,10 +117,22 @@ loader.load('./obj4/scene.gltf', (gltf) => {
   //loadedObject.rotation.x = Math.PI / 2;
   loadedObject.position.set(1, 0, 180);
 
+
+
+
+
+
+
+
+
+
+
+
   // Check if the model has animations
   if (gltf.animations && gltf.animations.length) {
     mixer = new THREE.AnimationMixer(loadedObject); // Create animation mixer
-    const action = mixer.clipAction(gltf.animations[0]); // Get the first animation
+    const action = mixer.clipAction(gltf.animations[0]); // Get the first animation  
+    // all the builtin animations are stored as data in form of array.
     action.play(); // Play the animation
   }
 }, undefined, (error) => {
