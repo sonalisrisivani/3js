@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Scene with Spline and Three.js</title>
+  <style>
+    body, html { 
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    canvas { 
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <!-- Include Three.js from Skypack CDN -->
+  <script type="module">
+    import * as THREE from 'https://cdn.skypack.dev/three@0.156.0/build/three.module.js';
+    //import { OrbitControls } from 'https://cdn.skypack.dev/three@0.156.0/examples/jsm/controls/OrbitControls.js';
+  </script>
+
+  <!-- Include SplineLoader from jsDelivr CDN -->
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@splinetool/loader@1.9.59/build/SplineLoader.min.js"></script>
+
+  <script type="module">
+    // Camera setup
+    const camera = new THREE.OrthographicCamera(window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, -50000, 10000);
+    camera.position.set(0, 0, 0);
+    camera.quaternion.setFromEuler(new THREE.Euler(0, 0, 0));
+
+    // Scene setup
+    const scene = new THREE.Scene();
+
+    // Spline loader
+    const loader = new SplineLoader();
+    loader.load(
+      'https://prod.spline.design/ZEpUIW-9zSLA6vFz/scene.splinecode',
+      (splineScene) => {
+        scene.add(splineScene);
+      },
+      null,
+      (error) => {
+        console.log('An error happened while loading the scene:', error);
+      }
+    );
+
+    // Renderer setup
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setAnimationLoop(animate);
+    document.body.appendChild(renderer.domElement);
+
+    // Scene settings
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
+    scene.background = new THREE.Color('#3e3d3c');
+    renderer.setClearAlpha(0);
+
+    // Orbit Controls
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.125;
+
+    // Resize handler
+    window.addEventListener('resize', onWindowResize);
+    function onWindowResize() {
+      camera.left = window.innerWidth / - 2;
+      camera.right = window.innerWidth / 2;
+      camera.top = window.innerHeight / 2;
+      camera.bottom = window.innerHeight / - 2;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    // Animation loop
+    function animate(time) {
+      controls.update();
+      renderer.render(scene, camera);
+    }
+  </script>
+</body>
+</html>

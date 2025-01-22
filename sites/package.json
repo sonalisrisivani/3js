@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@splinetool/loader": "^1.9.59"
+  }
+}
