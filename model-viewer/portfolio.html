@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Model Viewer</title>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+ <style>
+
+@import url(https://fonts.googleapis.com/css?family=Amatic+SC);
+@import url(https://fonts.googleapis.com/css?family=Bungee);
+
+    body {
+      margin: 10px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column; /* Stack elements vertically */
+      justify-content: center;
+      align-items: center;
+      
+      
+      background: radial-gradient(ellipse, black 70%, red 100%);  /*Optional: Set a background color */
+      /*overflow: hidden;*/
+    }
+    #angel {
+      overflow: visible; /* Prevent the model from being clipped */
+    }
+
+
+
+
+
+    /* Position the text at the top */
+    .text-mask {
+      position: absolute;
+      top: 20px; /* You can adjust this as needed */
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Amatic SC',cursive;
+      font-size: 4rem; /* Adjust text size */
+      font-weight: bold;
+      color: transparent;
+      background-image: url("resources/text-background.gif"); /* Add background image */
+      background-size: cover;
+      background-clip: text; /* Make the background clip to the text */
+      text-align: center;
+    }
+
+
+    .txt {
+      margin: 20px;
+      padding: 20px;
+      color: white;
+      font-size: 30px;
+	font-family: 'Amatic SC',cursive;
+      text-align: left;
+      /*background: rgba(0, 0, 0, 0.7);*/
+      border-radius: 10px;
+      max-width: 100%;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+
+
+#butterfly {
+  z-index: 10; /* or any value higher than the other elements */
+  position: relative; /* Ensure z-index works */
+}
+
+#perspective-container {
+  perspective: 1000px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    .audio-btn {
+
+	
+      padding: 5px 10px; /* Smaller button size */
+      font-size: 12px;    /* Smaller text */
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .audio-btn:hover {
+      background-color: black;
+    }
+
+    .audio-btn:active {
+      background-color: #3e8e41;
+    }
+
+    /* Position buttons at the top right corner */
+    .audio-btn-container {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px; /* Space between buttons */
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.typing-effect {
+  font-size: 50px;
+  font-family: 'Bungee',cursive;
+  white-space: normal;
+  overflow: hidden;
+  border-right: 3px solid white; /* Creates the cursor effect */
+  height: 150px;
+  width: 100%;
+  display: inline;
+  animation: blink 0.75s step-end infinite;
+} 
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+.type-height{
+
+height: 160px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.horizontal-scroll-wrapper {
+  display: flex;
+  overflow-x: auto;
+  padding: 20px 0;
+  width: 100%;
+  max-height: $finalHeight;
+  gap: 10px;
+  scroll-behavior: smooth;
+}
+
+.horizontal-scroll-wrapper > div {
+  flex-shrink: 0;
+  width: 260px;   /* Set width to 60px */
+  height: 270px;  /* Set height to 70px */
+  background: #cab;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.horizontal-scroll-wrapper > div:hover,
+.horizontal-scroll-wrapper > div:focus {
+  transform: scale(1.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  outline: none;
+}
+
+
+
+  </style>
+
+</head>
+<body>
+ 
+
+
+
+  <!-- Audio Player -->
+  <audio id="player" src="resources/Isabellas_Lullaby.mp3"></audio>
+  <div class="audio-btn-container"> 
+    <button class="audio-btn" onclick="document.getElementById('player').play()">▶️</button> 
+    <button class="audio-btn" onclick="document.getElementById('player').pause()">⏸️</button> 
+    <button class="audio-btn" onclick="document.getElementById('player').volume += 0.1">🔊</button> 
+    <button class="audio-btn" onclick="document.getElementById('player').volume -= 0.1">🔉</button> 
+  </div>
+
+
+
+
+
+
+
+
+
+
+<br><br><br><br><br><br>
+
+  <!-- Text with the mask and background applied -->
+  <div class="text-mask">
+    <span>Sup! Peeps!</span>
+  </div>
+
+
+<br>
+<hr>
+
+
+
+
+<div id="perspective-container">
+<model-viewer 
+    id="butterfly"
+    src="obj/butterfly.glb"
+    ar
+    ar-modes="webxr scene-viewer quick-look"
+    camera-controls="false"
+    disable-zoom="true"
+    tone-mapping="neutral"
+    autoplay
+    shadow-softness="0"
+    camera-orbit="155.2deg 71.95deg 4.78m"
+    field-of-view="38.87deg"
+    animation-name="fly-1"> <!-- Specify the animation name -->
+</model-viewer>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div class="txt"> <!-- this is to align all elements within it to left side of html body-->
+
+<div class="txt">
+
+I am - <br> 
+<div class="type-height">
+<div class="typing-effect" id="typing-text"></div>
+</div>
+</div>
+
+
+
+<div class="txt">
+<b>About Me:</b>
+<br>
+Final Year Stud in BTech(CS) <br>
+I like to give life to my thoughts by Art and Coding
+<br> and <br>
+Love watching anime (r u also a tpn fan?)
+</div>
+
+
+<div class="txt">
+<b>Motto:</b>
+A passionate developer who sees skills as a means to help others. My goal is to create meaningful tools and resources that positively impact lives, often as an unseen but valuable presence in people's everyday routines.
+</div>
+
+
+
+<div class="txt">
+<b>Fun Fact(The Origin):</b>
+At the age of 16 , Started building websites (using WordPress during covid-19 ) cos i found it cool and then fell in love with its process and product. 
+</div>
+
+
+
+<div class="txt">
+<b>My Skills:</b><br>
+<table>
+  <tr>
+    <td><b>Programming Languages</b></td>
+    <td>Java | C Programming | Python</td>
+  </tr>
+  <tr>
+    <td><b>Web Development</b></td>
+    <td>HTML | CSS | JavaScript | 3JS | React JS | Node.js | Flask | PHP | GVC</td>
+  </tr>
+  <tr>
+    <td><b>Database</b></td>
+    <td>MySQL | MongoDB | Firestore | Firebase Realtime Database</td>
+  </tr>
+  <tr>
+    <td><b>Cloud</b></td>
+    <td>Firebase | Azure</td>
+  </tr>
+  <tr>
+    <td><b>Design</b></td>
+    <td>Figma | Canva | WordPress | MS Word | Dora AI</td>
+  </tr>
+  <tr>
+    <td><b>Data Visualization</b></td>
+    <td>Looker Studio | Power BI | MS Excel</td>
+  </tr>
+  <tr>
+    <td><b>Other Tools</b></td>
+    <td>GitHub | Visual Studio Code</td>
+  </tr>
+  <tr>
+    <td><b>Operating Systems</b></td>
+    <td>Windows | Kali Linux | Linux</td>
+  </tr>
+</table>
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+  <model-viewer
+    id = "angel"
+    src="obj/angel-v2.glb"
+    ar
+    ar-modes="webxr scene-viewer quick-look"
+    camera-controls
+  disable-zoom
+    tone-mapping="neutral"
+    poster="poster.webp"
+    shadow-intensity="1.48"
+    autoplay
+    shadow-softness="0.24"
+    exposure="0.59"
+    auto-rotate
+    camera-orbit="0deg 86.44deg 1m"
+    field-of-view= "9deg"
+    environment-image="neutral"
+    
+    style="height: 700px !important; width: 500px !important; overflow: visible;">
+  </model-viewer>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="txt"> <!-- this is to align all elements within it to left side of html body-->
+
+
+<div class="txt">
+<h3>💖 Some of my Projects<h3>
+<div class="horizontal-scroll-wrapper">
+  <div >Item 1</div>
+  <div >Item 2</div>
+  <div >Item 3</div>
+  <div >Item 4</div>
+  <div >Item 5</div>
+  <div >Item 6</div>
+  <div >Item 1</div>
+  <div >Item 2</div>
+  <div >Item 3</div>
+  <div >Item 4</div>
+  <div >Item 5</div>
+  <div >Item 6</div>
+  <div >Item 3</div>
+  <div >Item 4</div>
+  <div >Item 5</div>
+  <div >Item 6</div>
+  <div >Item 1</div>
+  <div >Item 2</div>
+  <div >Item 3</div>
+  <div >Item 4</div>
+  <div >Item 5</div>
+  <div >Item 6</div>
+
+</div>
+
+</div>
+
+
+
+
+
+
+<div class="txt">
+<h3>💖 Support My Projects<h3>
+If you like my work and want to support me, consider sponsoring me! Your support helps me to keep creating and maintaining amazing projects.  
+
+<div align="center">
+  <a href="https://github.com/sponsors/sonalisrisivani/dashboard">
+    <img src="https://img.shields.io/badge/Sponsor%20Me-✨-blueviolet?style=for-the-badge&logo=github-sponsors" alt="Sponsor Me">
+  </a>
+</div>
+
+</div>
+
+
+
+
+
+
+
+<div class="txt">
+<h3>🔗 Connect with me:</h3>
+
+<p>
+  <a href="https://mail.google.com/mail/?view=cm&to=sonalisrisivani@gmail.com" target="_blank">
+    <img src="https://img.shields.io/badge/Gmail-sonalisrisivani@gmail.com-red?style=for-the-badge&logo=gmail" alt="Gmail Badge">
+  </a>
+  <a href="https://www.linkedin.com/in/gsss/" target="_blank">
+    <img src="https://img.shields.io/badge/LinkedIn-Connect%20with%20me-blue?style=for-the-badge&logo=linkedin" alt="LinkedIn Badge">
+  </a>
+  <a href="https://github.com/sonalisrisivani" target="_blank">
+    <img src="https://img.shields.io/badge/GitHub-Sonali_21-black?style=for-the-badge&logo=github" alt="GitHub Badge">
+  </a>
+
+</p>
+
+
+
+</div>
+
+
+
+</div>
+<br><br>
+
+<div id="perspective-container">
+<model-viewer 
+    
+    src="obj/butterfly.glb"
+    ar
+    ar-modes="webxr scene-viewer quick-look"
+    camera-controls="false"
+    disable-zoom="true"
+    tone-mapping="neutral"
+    autoplay
+    shadow-softness="0"
+    camera-orbit="-10deg 10deg 4.78m"
+    field-of-view="38.87deg"
+    animation-name="fly-1"  <!-- Specify the animation name -->
+
+ > 
+
+</model-viewer>
+</div>
+<br><br>
+
+
+
+<script>
+    const butterfly = document.getElementById('butterfly');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Function to move the butterfly based on scroll
+    function moveButterflyOnScroll() {
+      // Get the scroll position
+      const scrollY = window.scrollY;
+
+	let moveDistanceX=0;
+	let moveDistanceY=0;
+	let moveDistanceZ=0;
+
+
+
+
+if (scrollY <= 420) {
+  // First section (0 to 420px)
+  butterfly.style.opacity = 1; // Make it visible
+  moveDistanceY = Math.max(scrollY * 0.5, 1);    // Ensure Y >= 1
+  moveDistanceX = -scrollY * 0.4;              // Horizontal movement
+  moveDistanceZ = scrollY * 2;               // Subtle Z-axis movement
+} else {
+
+// After 420px, hide the butterfly
+    butterfly.style.opacity = 0; // Fade out
+    //butterfly.style.transform = `scale(0)`; // Optionally shrink it
+    
+    }
+
+
+
+
+
+      // Update the transform property to move the butterfly down
+      butterfly.style.transform = `translateX(${moveDistanceX}px) translateY(${moveDistanceY}px) translateZ(${moveDistanceZ}px)`;
+      butterfly.style.transition = 'transform 0.1s ease-out'; // Adds smooth transition
+
+
+    }
+
+    // Listen to scroll events
+    window.addEventListener('scroll', moveButterflyOnScroll);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const words = ["A Frontend Developer", "A Backend Developer", "A Full Stack Developer", "A Product Designer"];
+let i = 0;
+let currentWord = 0;
+const typingTextElement = document.getElementById('typing-text');
+
+function typeWord() {
+  if (i < words[currentWord].length) {
+    typingTextElement.innerHTML += words[currentWord].charAt(i);
+    i++;
+    setTimeout(typeWord, 100); // Adjust the typing speed here
+  } else {
+    setTimeout(() => {
+      clearText(); // Clear the text after typing each word
+    }, 1000); // Delay before clearing the text
+  }
+}
+
+function clearText() {
+  typingTextElement.innerHTML = ""; // Clear the text
+  i = 0; // Reset the typing index
+  currentWord++; // Move to the next word
+  if (currentWord < words.length) {
+    setTimeout(typeWord, 500); // Delay before starting the next word
+  } else {
+    setTimeout(() => {
+      currentWord = 0; // Reset to the first word
+      typeWord(); // Restart typing
+    }, 2000); // Delay before restarting
+  }
+}
+
+typeWord(); // Start the typing animation
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </script>
+
+
+</body>
+
+</html>
