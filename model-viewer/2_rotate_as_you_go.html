@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scroll Rotate Model</title>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer"></script>
+    <style>
+        body {
+            margin: 0;
+            height: 300vh; /* Ensure we have enough space to scroll */
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Full viewport for model-viewer */
+        #modelViewer {
+            width: 100vw;
+            height: 100vh;
+            position: fixed; /* Keep the model fixed as we scroll */
+            top: 0;
+            left: 0;
+            z-index: -1; /* Position it behind other content */
+        }
+
+        section {
+            height: 100vh; /* Full height for each section */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative; /* To make sure content overlaps on top of the model */
+            z-index: 1;
+        }
+
+        h2 {
+            color: white; /* Text color for visibility */
+        }
+    </style>
+</head>
+<body>
+    <model-viewer 
+        id="modelViewer"
+        src="obj/perdit.glb" 
+        ar 
+        ar-modes="webxr scene-viewer quick-look" 
+        tone-mapping="agx" 
+        poster="poster.webp" 
+        shadow-intensity="0" 
+        exposure="0.67" 
+        shadow-softness="0" 
+        camera-controls
+        camera-orbit="0deg 90deg auto" 
+        field-of-view="28.05deg">
+    </model-viewer>
+
+    <section id="section1">
+        <h2>Section 1</h2>
+    </section>
+
+    <section id="section2">
+        <h2>Section 2</h2>
+    </section>
+
+    <section id="section3">
+        <h2>Section 3</h2>
+    </section>
+
+    <script>
+        const modelViewer = document.getElementById('modelViewer');
+
+        // Listen for scroll events to update the rotation
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const maxScroll = document.body.scrollHeight - window.innerHeight;
+            
+            // Calculate rotation based on scroll position
+            const rotation = (scrollY / maxScroll) * 360;  // Rotate 360 degrees across the scroll range
+            
+            // Set the camera-orbit property dynamically to rotate the model
+            modelViewer.setAttribute('camera-orbit', `${rotation}deg 90deg auto`);
+        });
+    </script>
+</body>
+</html>
