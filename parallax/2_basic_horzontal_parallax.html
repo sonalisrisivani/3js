@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Horizontal Parallax</title>
+  <style>
+    body { 
+      margin: 0; 
+      overflow-x: hidden; 
+      height: 200vh; /* Longer page to enable scrolling */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(to right, #ffecd2, #fcb69f); /* Nice gradient */
+    }
+
+    .container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .parallax {
+      position: absolute;
+      width: 150px; /* Adjust object size */
+      height: 150px;
+      background: url('resources/layer2.png') no-repeat center / contain;
+      top: 50%;
+      right: -200px; /* Start off-screen on the right */
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="parallax"></div>
+  </div>
+
+  <script>
+    window.addEventListener("scroll", () => {
+      let scrollPos = window.scrollY;
+      document.querySelector(".parallax").style.transform = `translateX(-${scrollPos * 2}px)`; 
+    });
+  </script>
+
+</body>
+</html>

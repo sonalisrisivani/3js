@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zig-Zag Parallax</title>
+  <style>
+    body { margin: 0; height: 200vh; }
+    .parallax {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background: url('resources/layer2.png') no-repeat center / contain;
+      top: 50%;
+      left: 50%;
+      transform-origin: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="parallax"></div>
+
+  <script>
+    window.addEventListener("scroll", () => {
+      let scrollY = window.scrollY;
+      let xMovement = Math.sin(scrollY * 0.05) * 100; // Creates zig-zag movement on X-axis
+      let yMovement = scrollY * 0.2; // Vertical movement
+      document.querySelector(".parallax").style.transform = `translate(${xMovement}px, ${yMovement}px)`;
+    });
+  </script>
+
+</body>
+</html>

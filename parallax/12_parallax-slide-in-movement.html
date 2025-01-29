@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide-In Parallax</title>
+  <style>
+    body { margin: 0; height: 200vh; }
+    .parallax {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background: url('resources/layer2.png') no-repeat center / contain;
+      top: 50%;
+      left: -100px; /* Start off-screen */
+    }
+  </style>
+</head>
+<body>
+
+  <div class="parallax"></div>
+
+  <script>
+    window.addEventListener("scroll", () => {
+      let scrollY = window.scrollY;
+      let slidePosition = Math.min(scrollY * 0.5, 100); // Limit the slide-in distance
+      document.querySelector(".parallax").style.left = `${-100 + slidePosition}px`;
+    });
+  </script>
+
+</body>
+</html>

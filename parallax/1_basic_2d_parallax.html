@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basic Parallax</title>
+<style>
+
+body { margin: 0; overflow-x: hidden; height: 200vh; }
+.parallax {
+  position: absolute; width: 100%; height: 100vh; background-size: cover;
+}
+.layer1 { background: url('resources/layer1.png'); z-index: 1; }
+.layer2 { background: url('resources/layer2.png'); z-index: 2; }
+.parallax {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  background-repeat: no-repeat;  /* Stops repetition */
+  background-position: center;   /* Centers the image */
+}
+
+
+</style>
+</head>
+<body>
+  <div class="parallax layer1"></div>
+  <div class="parallax layer2"></div>
+
+  <script>
+
+// use http://remove.bg/upload to remove background of the png
+
+window.addEventListener("scroll", () => {
+  document.querySelector(".layer1").style.transform = `translateY(${window.scrollY * 0.3}px)`;
+  document.querySelector(".layer2").style.transform = `translateY(${window.scrollY * 0.7}px)`;
+});
+
+
+  </script>
+</body>
+</html>

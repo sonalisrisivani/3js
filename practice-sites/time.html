@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Import Spline</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #121212;
+    }
+
+    canvas {
+      width: 100vw;
+      height: 100vh;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas3d"></canvas>
+
+  <script type="module">
+    import { Application } from "https://cdn.skypack.dev/@splinetool/runtime@latest";
+//this is latest version for spline runtime library
+
+
+// spline scene
+// https://app.spline.design/file/99e0afe1-126b-431a-9e35-94dc3d20fdb6
+// i imported .glb file to spline editor and imported the scene after making few changes
+
+    const canvas = document.getElementById("canvas3d");
+    const app = new Application(canvas);
+
+    app.load('https://prod.spline.design/CDZmXWYumgpGa1AP/scene.splinecode')
+      .then(() => {
+        alert("Spline scene loaded successfully!");
+      })
+      .catch((err) => {
+        alert("Failed to load Spline scene:"+ err);
+      });
+
+
+  </script>
+</body>
+</html>
+
+

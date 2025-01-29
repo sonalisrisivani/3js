@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vertical Parallax</title>
+  <style>
+    body { margin: 0; height: 200vh; }
+    .parallax {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background: url('resources/layer2.png') no-repeat center / contain;
+      top: 50%;
+      left: 50%;
+      transform-origin: center;
+    }
+  </style>
+</head>
+<body>
+<h1>hi</h1>
+  <div class="parallax"></div>
+<h1>hi</h1>
+  <script>
+    window.addEventListener("scroll", () => {
+      document.querySelector(".parallax").style.transform = `translateY(${window.scrollY * 0.5}px)`;
+    });
+  </script>
+
+</body>
+</html>

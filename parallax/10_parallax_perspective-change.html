@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perspective Parallax</title>
+  <style>
+    body { margin: 0; height: 200vh; }
+    .parallax {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: url('resources/layer2.png') no-repeat center / contain;
+      top: 50%;
+      left: 50%;
+      transform-origin: center;
+      perspective: 1000px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="parallax"></div>
+
+  <script>
+    window.addEventListener("scroll", () => {
+      let scaleValue = 1 + window.scrollY * 0.005;
+      document.querySelector(".parallax").style.transform = `scale(${scaleValue})`;
+    });
+  </script>
+
+</body>
+</html>

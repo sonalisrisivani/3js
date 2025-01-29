@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circular Parallax</title>
+  <style>
+    body { margin: 0; height: 200vh; }
+    .parallax {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background: url('resources/layer2.png') no-repeat center / contain;
+      top: 50%;
+      left: 50%;
+      transform-origin: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="parallax"></div>
+
+  <script>
+    window.addEventListener("scroll", () => {
+      const scrollY = window.scrollY;
+      const angle = scrollY * 0.02; // Controls rotation speed
+      const radius = 150; // Radius of circular movement
+      const x = Math.cos(angle) * radius;
+      const y = Math.sin(angle) * radius;
+
+      document.querySelector(".parallax").style.transform = `translate(${x}px, ${y}px)`;
+    });
+  </script>
+
+</body>
+</html>

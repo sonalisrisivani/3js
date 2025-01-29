@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zoom-Out Parallax</title>
+  <style>
+    body { 
+      margin: 0; 
+      height: 200vh; /* Make the page tall enough to allow scrolling */
+      background-color: #f0f0f0;
+    }
+
+    .parallax {
+      position: fixed; /* Keeps the element in the same place while scrolling */
+      top: 50%; 
+      left: 50%;
+      width: 600px; /* Set an initial size for the image */
+      height: 600px;
+      transform-origin: center center; /* Ensure the zoom happens from the center */
+      transition: transform 0.1s ease-in-out; /* Smooth zoom */
+      transform: translate(-50%, -50%) scale(1); /* Initial transform at page load */
+    }
+
+    /* Optional: Set a background color or image */
+    .parallax img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- The image element -->
+  <div class="parallax">
+    <img src="resources/layer2.png" alt="Zoom Out Image">
+  </div>
+
+  <script>
+    window.addEventListener("scroll", () => {
+      const scrollY = window.scrollY; // Get the vertical scroll position
+      // Scale down the image as the page scrolls down
+      const scaleValue = 1 - (scrollY * 0.003); // Adjust the zoom-out speed
+      // Set a minimum scale value to avoid the image disappearing
+      const minScale = 0.3; // The minimum size of the image
+      document.querySelector(".parallax").style.transform = `translate(-50%, -50%) scale(${Math.max(scaleValue, minScale)})`;
+    });
+  </script>
+
+</body>
+</html>
